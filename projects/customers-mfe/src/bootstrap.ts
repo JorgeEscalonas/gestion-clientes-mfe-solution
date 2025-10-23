@@ -1,9 +1,8 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { App } from './app/app';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { importProvidersFrom } from '@angular/core';
 import { routes } from './app/app.routes';
 
 // Export the routes for Module Federation
@@ -12,7 +11,10 @@ export { routes as appRoutes } from './app/app.routes';
 // Bootstrap the application
 const bootstrap = () => bootstrapApplication(App, {
   providers: [
-    provideRouter(routes),
+    provideRouter(
+      routes,
+      withComponentInputBinding() // Habilita el binding de parámetros de ruta a inputs
+    ),
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi())
   ]
