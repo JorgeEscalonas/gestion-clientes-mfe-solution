@@ -34,14 +34,14 @@ export class CustomerService {
     );
   }
 
-  deleteCustomer(id: number): void {
+  deleteCustomer(id: number | string): void {
     this.http.delete(`${this.apiUrl}/${id}`).subscribe({
       next: () => this.loadCustomers(),
       error: (error) => console.error('Error deleting customer:', error)
     });
   }
 
-  getCustomer(id: number): Observable<Customer> {
+  getCustomer(id: number | string): Observable<Customer> {
     return this.http.get<Customer>(`${this.apiUrl}/${id}`);
   }
 }

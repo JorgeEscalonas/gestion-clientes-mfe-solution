@@ -63,7 +63,7 @@
         <button type="submit" [disabled]="form.invalid || loading">
           {{ isEditMode ? 'Actualizar' : 'Guardar' }}
         </button>
-        <button type="button" class="btn-secondary" (click)="onCancel()" [disabled]="loading">
+        <button type="button" class="btn-secondary cancel-button" (click)="onCancel()" [disabled]="loading">
           Cancelar
         </button>
       </div>
