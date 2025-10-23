@@ -1,5 +1,34 @@
 {
   "customers": [
-    { "id": 1, "name": "Ana Pérez", "email": "ana@mail.com", "phone": "0412-1234567" }
+    {
+      "name": "Jorge Daniel Escalona Suarez",
+      "email": "escalonajorge73@gmail.com",
+      "phone": "0416354789",
+      "id": "2"
+    },
+    {
+      "name": "Jorge Daniel Escalona Suarez",
+      "email": "ing.jorgescalona@gmail.com",
+      "phone": "04120296712",
+      "id": "3"
+    },
+    {
+      "name": "milvida suarez caruci",
+      "email": "milvidasuarez@gmail.com",
+      "phone": "123456789",
+      "id": "4"
+    },
+    {
+      "name": "victoria",
+      "email": "victoriadanielaescalona@gmail.com",
+      "phone": "3445567",
+      "id": "4418"
+    },
+    {
+      "id": "3184",
+      "name": "Jorge Daniel Escalona Suarez",
+      "email": "escalonajorge73@mail.com",
+      "phone": "04120296711"
+    }
   ]
 }
