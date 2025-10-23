@@ -89,3 +89,9 @@ button[type="submit"]:disabled {
 .cancel-button:hover {
   background-color: #5a6268;
 }
+
+.loading {
+  text-align: center;
+  padding: 1rem;
+  color: #666;
+}

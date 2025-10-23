@@ -12,15 +12,23 @@
       </thead>
       <tbody>
         @for (customer of customerService.customers$(); track customer.id) {
-          <tr>
+          <tr [attr.data-testid]="'customer-row-' + customer.id">
             <td>{{ customer.name }}</td>
             <td>{{ customer.email }}</td>
             <td>{{ customer.phone }}</td>
             <td class="actions">
-              <button (click)="editCustomer(customer)" class="edit-btn">
+              <button
+                (click)="editCustomer(customer)"
+                class="edit-btn"
+                [attr.data-testid]="'edit-' + customer.id"
+              >
                 Editar
               </button>
-              <button (click)="deleteCustomer(customer.id!)" class="delete-btn">
+              <button
+                (click)="deleteCustomer(customer.id!)"
+                class="delete-btn"
+                [attr.data-testid]="'delete-' + customer.id"
+              >
                 Eliminar
               </button>
             </td>
@@ -35,7 +43,11 @@
   </div>
 
   <div class="add-button">
-    <button routerLink="new" class="primary-btn">
+    <button
+      routerLink="new"
+      class="primary-btn"
+      data-testid="add-customer"
+    >
       Agregar Cliente
     </button>
   </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { CustomerService } from '../services/customer.service';
 import { Customer } from '../models/customer.model';
 
@@ -14,7 +14,8 @@ import { Customer } from '../models/customer.model';
 export class CustomerListComponent implements OnInit {
   constructor(
     public customerService: CustomerService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -22,7 +23,11 @@ export class CustomerListComponent implements OnInit {
   }
 
   editCustomer(customer: Customer) {
-    this.router.navigate(['/', 'edit', customer.id]);
+    this.router.navigate(['edit', customer.id], { relativeTo: this.route });
+  }
+
+  addNewCustomer() {
+    this.router.navigate(['new'], { relativeTo: this.route });
   }
 
   deleteCustomer(id: number) {
