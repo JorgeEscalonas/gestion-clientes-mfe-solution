@@ -3,15 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve shell -o",
-    "build": "ng build shell && ng build customers-mfe",
-    "build:all": "npm run build",
-    "build:shell": "ng build shell --configuration production --output-hashing=all",
-    "build:customers": "ng build customers-mfe --configuration production --output-hashing=all",
+    "start": "ng serve",
+    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "run:all": "node node_modules/@angular-architects/module-federation/src/server/mf-dev-server.js",
-    "vercel-build": "ng build shell --configuration production --output-hashing=all && ng build customers-mfe --configuration production --output-hashing=all"
+    "run:all": "node node_modules/@angular-architects/module-federation/src/server/mf-dev-server.js"
   },
   "prettier": {
     "printWidth": 100,
