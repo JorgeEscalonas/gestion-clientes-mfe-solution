@@ -15,7 +15,7 @@ export class CustomerFormComponent implements OnInit {
   form: FormGroup;
   isEditMode = false;
   loading = false;
-  customerId: number | null = null;
+  customerId: number | string | null = null;
   pageTitle = 'Nuevo Cliente';
 
   constructor(
@@ -32,15 +32,14 @@ export class CustomerFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Suscribirse a los cambios en los parámetros de la ruta
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
 
       if (id) {
         this.isEditMode = true;
-        this.customerId = +id;
+        this.customerId = id;
         this.pageTitle = 'Editar Cliente';
-        this.loadCustomerData(+id);
+        this.loadCustomerData(id); 
       } else {
         this.isEditMode = false;
         this.customerId = null;
@@ -50,7 +49,7 @@ export class CustomerFormComponent implements OnInit {
     });
   }
 
-  private loadCustomerData(id: number): void {
+  private loadCustomerData(id: number | string): void {
     this.loading = true;
     console.log('Cargando datos del cliente con ID:', id);
 
