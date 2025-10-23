@@ -114,12 +114,11 @@ describe('CustomerFormComponent', () => {
 
     beforeEach(() => {
       const route = TestBed.inject(ActivatedRoute);
-      // Get the existing paramMap spy
+
       paramMapSpy = (route.snapshot.paramMap as jasmine.SpyObj<any>);
-      // Configure it to return '1' for the 'id' parameter
+
       paramMapSpy.get.and.returnValue('1');
 
-      // Recreate the component with the updated route
       fixture = TestBed.createComponent(CustomerFormComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
@@ -155,7 +154,6 @@ describe('CustomerFormComponent', () => {
       const error = new Error('Failed to load customer');
       customerService.getCustomer.and.returnValue(throwError(() => error));
 
-      // Get the existing paramMap spy and set it to return '999' for the 'id' parameter
       const route = TestBed.inject(ActivatedRoute);
       const paramMapSpy = (route.snapshot.paramMap as jasmine.SpyObj<any>);
       paramMapSpy.get.and.returnValue('999');

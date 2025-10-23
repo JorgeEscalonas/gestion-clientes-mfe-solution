@@ -13,17 +13,15 @@ const bootstrap = () => bootstrapApplication(App, {
   providers: [
     provideRouter(
       routes,
-      withComponentInputBinding() // Habilita el binding de parámetros de ruta a inputs
+      withComponentInputBinding()
     ),
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi())
   ]
 });
 
-// Only bootstrap the application if not running in a module federation context
 if (!(window as any)['webpackChunkCustomersMfe']) {
   bootstrap().catch(err => console.error(err));
 }
 
-// Export the App component and bootstrap function for Module Federation
 export { App, bootstrap };
