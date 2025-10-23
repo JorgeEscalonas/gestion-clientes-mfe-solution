@@ -1,0 +1,42 @@
+<div class="card">
+  <h2>Gestión de Clientes</h2>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Teléfono</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (customer of customerService.customers$(); track customer.id) {
+          <tr>
+            <td>{{ customer.name }}</td>
+            <td>{{ customer.email }}</td>
+            <td>{{ customer.phone }}</td>
+            <td class="actions">
+              <button (click)="editCustomer(customer)" class="edit-btn">
+                Editar
+              </button>
+              <button (click)="deleteCustomer(customer.id!)" class="delete-btn">
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="4" class="no-data">No hay clientes registrados</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="add-button">
+    <button routerLink="new" class="primary-btn">
+      Agregar Cliente
+    </button>
+  </div>
+</div>
