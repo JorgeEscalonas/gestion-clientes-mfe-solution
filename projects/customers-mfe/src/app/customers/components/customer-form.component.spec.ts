@@ -24,6 +24,10 @@ describe('CustomerFormComponent', () => {
     const customerServiceSpy = jasmine.createSpyObj('CustomerService', ['getCustomer', 'addCustomer', 'updateCustomer']);
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
+    // Create a mock for paramMap
+    const paramMapSpy = jasmine.createSpyObj('ParamMap', ['get']);
+    paramMapSpy.get.and.returnValue(null);
+
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, HttpClientTestingModule],
       providers: [
@@ -32,10 +36,9 @@ describe('CustomerFormComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
+            paramMap: of(paramMapSpy),
             snapshot: {
-              paramMap: {
-                get: (key: string) => null
-              }
+              paramMap: paramMapSpy
             }
           }
         }
@@ -87,29 +90,36 @@ describe('CustomerFormComponent', () => {
 
     it('should validate email format', () => {
       const emailControl = component.form.get('email');
-      
+
       emailControl?.setValue('invalid-email');
       expect(emailControl?.valid).toBeFalsy();
-      
+
       emailControl?.setValue('valid@example.com');
       expect(emailControl?.valid).toBeTruthy();
     });
 
     it('should validate phone number format', () => {
       const phoneControl = component.form.get('phone');
-      
+
       phoneControl?.setValue('abc123');
       expect(phoneControl?.valid).toBeFalsy();
-      
+
       phoneControl?.setValue('1234567890');
       expect(phoneControl?.valid).toBeTruthy();
     });
   });
 
   describe('Edit Mode', () => {
+    let paramMapSpy: jasmine.SpyObj<any>;
+
     beforeEach(() => {
       const route = TestBed.inject(ActivatedRoute);
-      (route.snapshot.paramMap.get as jasmine.Spy).and.returnValue('1');
+      // Get the existing paramMap spy
+      paramMapSpy = (route.snapshot.paramMap as jasmine.SpyObj<any>);
+      // Configure it to return '1' for the 'id' parameter
+      paramMapSpy.get.and.returnValue('1');
+
+      // Recreate the component with the updated route
       fixture = TestBed.createComponent(CustomerFormComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
@@ -128,9 +138,9 @@ describe('CustomerFormComponent', () => {
         email: 'updated@example.com',
         phone: '9876543210'
       });
-      
+
       component.onSubmit();
-      
+
       expect(customerService.updateCustomer).toHaveBeenCalledWith({
         id: 1,
         name: 'Updated Name',
@@ -144,19 +154,21 @@ describe('CustomerFormComponent', () => {
     it('should handle error when loading customer fails', fakeAsync(() => {
       const error = new Error('Failed to load customer');
       customerService.getCustomer.and.returnValue(throwError(() => error));
-      
+
+      // Get the existing paramMap spy and set it to return '999' for the 'id' parameter
       const route = TestBed.inject(ActivatedRoute);
-      (route.snapshot.paramMap.get as jasmine.Spy).and.returnValue('999');
-      
+      const paramMapSpy = (route.snapshot.paramMap as jasmine.SpyObj<any>);
+      paramMapSpy.get.and.returnValue('999');
+
       spyOn(console, 'error');
-      
+
       fixture = TestBed.createComponent(CustomerFormComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
       tick();
-      
+
       expect(console.error).toHaveBeenCalledWith(
-        'Error al cargar el cliente:', 
+        'Error al cargar el cliente:',
         jasmine.objectContaining({
           error: error
         })
@@ -166,17 +178,17 @@ describe('CustomerFormComponent', () => {
     it('should handle error when saving customer fails', () => {
       const error = new Error('Failed to save customer');
       customerService.addCustomer.and.returnValue(throwError(() => error));
-      
+
       spyOn(console, 'error');
-      
+
       component.form.setValue({
         name: 'New Customer',
         email: 'new@example.com',
         phone: '1234567890'
       });
-      
+
       component.onSubmit();
-      
+
       expect(console.error).toHaveBeenCalledWith('Error al guardar el cliente:', error);
     });
   });

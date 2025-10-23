@@ -32,14 +32,22 @@ export class CustomerFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    // Suscribirse a los cambios en los parámetros de la ruta
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
 
-    if (id) {
-      this.isEditMode = true;
-      this.customerId = +id;
-      this.pageTitle = 'Editar Cliente';
-      this.loadCustomerData(+id);
-    }
+      if (id) {
+        this.isEditMode = true;
+        this.customerId = +id;
+        this.pageTitle = 'Editar Cliente';
+        this.loadCustomerData(+id);
+      } else {
+        this.isEditMode = false;
+        this.customerId = null;
+        this.pageTitle = 'Nuevo Cliente';
+        this.form.reset();
+      }
+    });
   }
 
   private loadCustomerData(id: number): void {
