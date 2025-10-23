@@ -1,58 +1,87 @@
-# ApexWorkspace
+# Gestión de Clientes - Microfrontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.6.
+Este es un microfrontend desarrollado con Angular 17+ que forma parte de una plataforma de gestión de negocios. Este módulo se encarga específicamente de la gestión de clientes, permitiendo listar, crear y editar información de clientes.
 
-## Development server
+## Características
 
-To start a local development server, run:
+- Listado de clientes
+- Creación de nuevos clientes
+- Edición de clientes existentes
+- Validación de formularios
+- Interfaz responsiva con Angular Material
+- Pruebas unitarias y de integración
 
-```bash
-ng serve
+## Requisitos Previos
+
+- Node.js 18+
+- npm 9+ o yarn 1.22+
+- Angular CLI 17+
+
+## Instalación
+
+1. Clona el repositorio:
+   ```bash
+   git clone [URL_DEL_REPOSITORIO]
+   cd apex-workspace
+   ```
+
+2. Instala las dependencias:
+   ```bash
+   npm install
+   ```
+
+3. Inicia el servidor de desarrollo:
+   ```bash
+   ng serve
+   ```
+
+4. Inicia el servidor JSON para la API simulada (en otra terminal):
+   ```bash
+   npm run server
+   ```
+
+5. Abre tu navegador en `http://localhost:4200`
+
+## Estructura del Proyecto
+
+```
+projects/
+  customers-mfe/         # Microfrontend de gestión de clientes
+    src/
+      app/
+        customers/       # Módulo de clientes
+          components/    # Componentes de la aplicación
+          models/        # Interfaces y modelos de datos
+          services/      # Servicios para la gestión de clientes
+        shared/          # Componentes y servicios compartidos
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Ejecución de Pruebas
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+### Pruebas Unitarias
 ```bash
-ng generate component component-name
+ng test customers-mfe
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
+### Pruebas de Integración
 ```bash
-ng generate --help
+ng test customers-mfe --include=**/*.integration.spec.ts
 ```
 
-## Building
+## Decisiones Técnicas
 
-To build the project run:
+### Arquitectura
+- **Microfrontends**: Implementado con Module Federation para permitir el despliegue independiente.
+- **Componentes Autónomos**: Uso de componentes independientes (standalone) para mejor encapsulamiento.
+- **Programación Reactiva**: Uso de RxJS para manejo de flujos de datos asíncronos.
 
-```bash
-ng build
-```
+### Estado
+- **Señales de Angular**: Uso de señales reactivas para el manejo de estado local en componentes.
+- **Servicios Reactivos**: Patrón de servicios con Observables para el manejo de estado compartido.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### UI/UX
+- **Angular Material**: Para componentes de interfaz de usuario consistentes y responsivos.
+- **Formularios Reactivos**: Para validación y manejo de formularios.
 
 ## Additional Resources
 
