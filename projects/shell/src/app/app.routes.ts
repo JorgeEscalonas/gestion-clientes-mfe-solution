@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { loadRemoteModule } from '@angular-architects/module-federation';
+import { loadRemoteModule as originalLoadRemoteModule, LoadRemoteModuleOptions } from '@angular-architects/module-federation';
 import { FallbackComponent } from './fallback/fallback.component';
 
 // Crear un módulo de respaldo para manejar errores
@@ -18,20 +18,26 @@ const createErrorModule = () => {
   };
 };
 
+const loadRemoteModule = async (remoteName: string, exposedModule: string): Promise<any> => {
+  const options: LoadRemoteModuleOptions = {
+    type: 'module',
+    remoteEntry: `http://localhost:${remoteName === 'customersMfe' ? '4201' : '4202'}/remoteEntry.js`,
+    exposedModule: `./${exposedModule}`
+  };
+
+  try {
+    return await originalLoadRemoteModule(options);
+  } catch (err: unknown) {
+    console.error('Error loading remote module:', err);
+    return createErrorModule();
+  }
+};
+
 export const routes: Routes = [
   {
     path: 'customers',
-    loadChildren: () => 
-      loadRemoteModule({
-        type: 'module',
-        remoteEntry: 'http://localhost:4201/remoteEntry.js',
-        exposedModule: './Component'
-      })
-      .then(m => m.CustomersModule)
-      .catch(err => {
-        console.error('Error loading remote module:', err);
-        return createErrorModule();
-      })
+    loadChildren: () => loadRemoteModule('customersMfe', 'app.routes')
+      .then((m: { routes: Routes }) => m.routes)
   },
   { 
     path: '', 
@@ -40,6 +46,7 @@ export const routes: Routes = [
   },
   { 
     path: '**', 
-    loadComponent: () => import('./fallback/fallback.component').then(m => m.FallbackComponent)
+    loadComponent: () => import('./fallback/fallback.component')
+      .then(m => m.FallbackComponent) 
   }
 ];

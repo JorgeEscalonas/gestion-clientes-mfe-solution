@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Customer } from '../models/customer.model';
 import { computed } from '@angular/core';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CustomerService {
@@ -10,17 +11,37 @@ export class CustomerService {
 
   private apiUrl = 'http://localhost:3000/customers';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.loadCustomers();
+  }
 
   loadCustomers() {
-    this.http.get<Customer[]>(this.apiUrl).subscribe(data => this.customers.set(data));
+    this.http.get<Customer[]>(this.apiUrl).subscribe({
+      next: data => this.customers.set(data),
+      error: error => console.error('Error loading customers:', error)
+    });
   }
 
-  addCustomer(customer: Customer) {
-    return this.http.post<Customer>(this.apiUrl, customer);
+  addCustomer(customer: Customer): Observable<Customer> {
+    return this.http.post<Customer>(this.apiUrl, customer).pipe(
+      tap(() => this.loadCustomers())
+    );
   }
 
-  updateCustomer(customer: Customer) {
-    return this.http.put<Customer>(`${this.apiUrl}/${customer.id}`, customer);
+  updateCustomer(customer: Customer): Observable<Customer> {
+    return this.http.put<Customer>(`${this.apiUrl}/${customer.id}`, customer).pipe(
+      tap(() => this.loadCustomers())
+    );
+  }
+
+  deleteCustomer(id: number): void {
+    this.http.delete(`${this.apiUrl}/${id}`).subscribe({
+      next: () => this.loadCustomers(),
+      error: (error) => console.error('Error deleting customer:', error)
+    });
+  }
+
+  getCustomer(id: number): Observable<Customer> {
+    return this.http.get<Customer>(`${this.apiUrl}/${id}`);
   }
 }

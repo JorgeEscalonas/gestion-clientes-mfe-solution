@@ -1,0 +1,80 @@
+<div class="card">
+  <h2>{{ pageTitle }}</h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="customer-form">
+    @if (loading) {
+      <div class="loading">Cargando...</div>
+    } @else {
+      <!-- Nombre -->
+      <div class="form-group">
+        <label for="name">Nombre</label>
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          placeholder="Ej: Ana Pérez"
+          [class.is-invalid]="hasError('name', 'required')"
+        />
+        @if (hasError('name', 'required')) {
+          <div class="error">El nombre es obligatorio</div>
+        }
+        @if (hasError('name', 'minlength')) {
+          <div class="error">El nombre debe tener al menos 3 caracteres</div>
+        }
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Ej: ana@mail.com"
+          [class.is-invalid]="hasError('email', 'required') || hasError('email', 'email')"
+        />
+        @if (hasError('email', 'required')) {
+          <div class="error">El email es obligatorio</div>
+        }
+        @if (hasError('email', 'email')) {
+          <div class="error">Ingrese un email válido</div>
+        }
+      </div>
+
+      <!-- Teléfono -->
+      <div class="form-group">
+        <label for="phone">Teléfono</label>
+        <input
+          id="phone"
+          type="tel"
+          formControlName="phone"
+          placeholder="Ej: 555-1234"
+          [class.is-invalid]="hasError('phone', 'required')"
+        />
+        @if (hasError('phone', 'required')) {
+          <div class="error">El teléfono es obligatorio</div>
+        }
+        @if (hasError('phone', 'pattern')) {
+          <div class="error">Ingrese solo números</div>
+        }
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="form.invalid || loading">
+          {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+        </button>
+        <button type="button" class="btn-secondary" (click)="onCancel()" [disabled]="loading">
+          Cancelar
+        </button>
+      </div>
+    } 
+  </form>
+</div>
+
+<style>
+.loading {
+  text-align: center;
+  padding: 1rem;
+  color: #666;
+}
+</style>
