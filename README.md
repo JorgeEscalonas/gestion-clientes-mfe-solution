@@ -53,7 +53,7 @@ Este es un microfrontend desarrollado con Angular 17+ que forma parte de una pla
 
 4. **Iniciar el servidor JSON para la API simulada** (en otra terminal):
    ```bash
-   npm run server
+   json-server --watch db.json --port 3000
    ```
    Esto iniciará un servidor JSON en `http://localhost:3000`
 
